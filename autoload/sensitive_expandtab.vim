@@ -1,11 +1,11 @@
 function! sensitive_expandtab#SetSensitiveExpandtab() abort
 
-  let expandtab = sensitive_expandtab#GuessExpandtab(getline(0, line("$")))
+  let l:expandtab = sensitive_expandtab#GuessExpandtab(getline(0, line("$")))
 
-  let &expandtab = expandtab
+  let &l:expandtab = l:expandtab
 
   if g:sensitive_expandtab_show_value
-    echo expandtab == 1 ? "set expandtab" : "set noexpandtab"
+    echo &l:expandtab == 1 ? "SensitiveExpandtab: set space" : "SensitiveExpandtab: set tab"
   endif
 
 endfunction
@@ -13,26 +13,26 @@ endfunction
 function! sensitive_expandtab#GuessExpandtab(lines) abort
 
   " default is set value
-  let expandtab = &expandtab
+  let l:expandtab = &expandtab
 
-  let space_count = 0
-  let tab_count = 0
+  let l:space_count = 0
+  let l:tab_count = 0
 
   for line in a:lines
     if line =~ "^ "
-      let space_count = space_count + 1
+      let l:space_count = l:space_count + 1
     elseif line =~ "^\t"
-      let tab_count = tab_count + 1
+      let l:tab_count = l:tab_count + 1
     endif
   endfor
 
-  if space_count < tab_count
-    let expandtab = 0
-  elseif space_count > tab_count
-    let expandtab = 1
+  if l:space_count < l:tab_count
+    let l:expandtab = 0
+  elseif l:space_count > l:tab_count
+    let l:expandtab = 1
   endif
 
-  return expandtab
+  return l:expandtab
 endfunction
 
 " vim:set ft=vim sw=2 sts=2 et:
